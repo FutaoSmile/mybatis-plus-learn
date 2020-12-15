@@ -1,0 +1,15 @@
+POST http://localhost:8888/article
+Content-Type: application/json
+user-id: 2
+
+{
+  "title": "租户1的文章1",
+  "content": "111",
+  "userId": 2
+}
+
+###
+
+GET http://localhost:8888/article
+Content-Type: application/json
+user-id: 1
