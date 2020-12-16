@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.handler.TenantLineHandler;
 import com.baomidou.mybatisplus.extension.plugins.inner.TenantLineInnerInterceptor;
 import com.futao.util.CurrentUserId;
+import lombok.extern.slf4j.Slf4j;
 import net.sf.jsqlparser.expression.Expression;
 import net.sf.jsqlparser.expression.ExpressionVisitor;
 import net.sf.jsqlparser.expression.LongValue;
@@ -17,6 +18,7 @@ import org.springframework.context.annotation.Configuration;
  * @author futao
  * @date 2020/12/15
  */
+@Slf4j
 @Configuration
 public class MybatisPlusConfig {
 
@@ -26,6 +28,7 @@ public class MybatisPlusConfig {
         TenantLineInnerInterceptor tenantLineInnerInterceptor = new TenantLineInnerInterceptor(new TenantLineHandler() {
             @Override
             public Expression getTenantId() {
+                log.info("获取租户ID:{}", CurrentUserId.s());
                 //租户
                 return new LongValue(CurrentUserId.s());
             }
@@ -39,6 +42,10 @@ public class MybatisPlusConfig {
             @Override
             public boolean ignoreTable(String tableName) {
                 //是否忽略tableName
+                log.info("调用ignoreTable:{}", tableName);
+                if (110L == CurrentUserId.s()) {
+                    return true;
+                }
                 return false;
             }
         });
