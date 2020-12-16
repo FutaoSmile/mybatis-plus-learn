@@ -29,7 +29,7 @@ public class MybatisPlusConfig {
             @Override
             public Expression getTenantId() {
                 log.info("获取租户ID:{}", CurrentUserId.s());
-                //租户
+                //租户-从ThreadLocal中读取当前登录的用户
                 return new LongValue(CurrentUserId.s());
             }
 
@@ -43,6 +43,7 @@ public class MybatisPlusConfig {
             public boolean ignoreTable(String tableName) {
                 //是否忽略tableName
                 log.info("调用ignoreTable:{}", tableName);
+                // 可设置超级管理员，能操作所有数据
                 if (110L == CurrentUserId.s()) {
                     return true;
                 }
